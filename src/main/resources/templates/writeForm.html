@@ -20,11 +20,11 @@
     </ul>
 </nav>
 <div class="container">
-    <form action="index.html">
-        <input class="form-control" placeholder="제목을 입력하세요." id="title" required />
+    <form action="/write" method="post">
+        <input class="form-control" placeholder="제목을 입력하세요." id="title" name="title" required />
     <br>
     <label for="content">내용</label>
-        <textarea class="form-control" placeholder="내용을 입력하세요." id="content" style="height: 300px; resize: none" required></textarea>
+        <textarea class="form-control" placeholder="내용을 입력하세요." id="content" name="content" style="height: 300px; resize: none" required></textarea>
     <br>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <input type="submit" class="btn btn-primary position-relative" value="글 작성"/>
