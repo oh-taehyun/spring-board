@@ -1,6 +1,7 @@
 package org.example.springboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springboard.dto.PostRequest;
 import org.example.springboard.entity.Post;
 import org.example.springboard.repository.PostRepository;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,8 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public void addPost(Post post){
+    public void addPost(PostRequest postRequest){
+        Post post = new Post(postRequest.getTitle(),postRequest.getContent());
         postRepository.save(post);
     }
 
@@ -27,5 +29,12 @@ public class PostService {
         return postRepository.findById(id).get();
     }
 
+    public void update(Long postId, PostRequest postRequest){
+        Post post = new Post(postId,postRequest.getTitle(),postRequest.getContent());
+
+    }
+    public void delete(Long postId){
+        postRepository.deleteById(postId);
+    }
 
 }

@@ -1,5 +1,6 @@
 package org.example.springboard.service;
 
+import org.example.springboard.dto.PostRequest;
 import org.example.springboard.entity.Post;
 import org.example.springboard.repository.PostRepository;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,13 @@ class PostServiceTest {
 
     @Test
     void 게시글_저장_테스트(){
-        Post post = new Post("제목","내용");
-        postService.addPost(post);
+        PostRequest postRequest = new PostRequest("제목", "내용");
+        postService.addPost(postRequest);
+        Post result = postRepository.findByTitle("제목");
+        assertAll(
+                ()-> assertEquals(postRequest.getTitle(),result.getTitle()),
+                ()->assertEquals(postRequest.getContent(),result.getContent())
 
-        assertEquals(post,postRepository.findByTitle("제목"));
+        );
     }
 }
