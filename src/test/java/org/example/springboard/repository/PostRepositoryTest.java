@@ -17,19 +17,19 @@ class PostRepositoryTest {
 
     @Test
     void 게시글_등록_테스트() {
-        Post post = new Post(1L,"제목","내용");
+        Post post = new Post("제목","내용");
         postRepository.save(post);
 
-        assertEquals(post, postRepository.findById(1L).get());
+        assertEquals(post, postRepository.findByTitle("제목"));
     }
 
     @Test
     void 게시글_삭제_테스트() {
 
-        Post post = new Post(1L,"제목","내용");
+        Post post = new Post("제목","내용");
         postRepository.save(post);
         postRepository.delete(post);
 
-        assertEquals(Optional.empty(),postRepository.findById(1L));
+        assertNull(postRepository.findByTitle("제목"));
     }
 }

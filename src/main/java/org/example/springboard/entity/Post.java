@@ -31,8 +31,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(Long id, String title, String content) {
-        this.id = id;
+    public Post( String title, String content) {
         this.title = title;
         this.content = content;
     }

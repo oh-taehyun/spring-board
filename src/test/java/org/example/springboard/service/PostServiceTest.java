@@ -17,9 +17,9 @@ class PostServiceTest {
 
     @Test
     void 게시글_저장_테스트(){
-        Post post = new Post(1L,"제목","내용");
+        Post post = new Post("제목","내용");
         postService.addPost(post);
 
-        assertEquals(post,postRepository.findById(1L).get());
+        assertEquals(post,postRepository.findByTitle("제목"));
     }
 }
