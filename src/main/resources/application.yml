@@ -4,5 +4,7 @@ spring:
       enabled: true
   datasource:
     url: jdbc:h2:mem:testdb  # H2 ?? ??
-
-
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
