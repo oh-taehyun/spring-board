@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.springboard.dto.UserAccountRequest;
 import org.example.springboard.entity.UserAccount;
 import org.example.springboard.repository.UserAccountRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,9 +13,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void join(UserAccountRequest request){
-        UserAccount user = UserAccount.builder().userId(request.getUserId()).password(request.getPassword()).build();
+        UserAccount user = UserAccount.builder().userId(request.getUserId()).password(bCryptPasswordEncoder.encode(request.getPassword())).build();
         userAccountRepository.save(user);
     }
 
