@@ -35,7 +35,7 @@ public class UserAccountController {
         return "loginPage";
     }
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String loginAction(HttpServletRequest request, UserAccountRequest userAccountRequest){
         UserAccount user = userAccountService.login(userAccountRequest);
         if(user == null){
@@ -48,7 +48,7 @@ public class UserAccountController {
         return "redirect:/";
     }
 
-    @GetMapping("/logout")
+//    @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session != null){
