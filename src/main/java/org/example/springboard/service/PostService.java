@@ -30,7 +30,7 @@ public class PostService {
     }
 
     public void update(Long postId, PostRequest postRequest){
-        Post post = postRepository.findById(postId).get();
+        Post post = findById(postId);
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
         postRepository.save(post);
