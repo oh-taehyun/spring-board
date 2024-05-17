@@ -1,6 +1,7 @@
 package org.example.springboard.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.springboard.dto.PostRequest;
 import org.example.springboard.entity.Post;
 import org.example.springboard.service.PostService;
@@ -9,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -20,18 +24,27 @@ import java.util.List;
  */
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
 
     private final PostService postService;
     @GetMapping("/write")
-    public String write(){
+    public String write(@ModelAttribute("post")PostRequest postRequest)
+    {
         return "writeForm";
+
     }
 
     @PostMapping("write")
-    public String addPost(PostRequest postRequest){
-        //로직 추가
-        postService.addPost(postRequest);
+    public String addPost(@Validated @ModelAttribute("post") PostRequest post,
+                          BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            log.info("errors={}",bindingResult);
+            return "writeForm";
+        }
+        //성공 로직
+        postService.addPost(post);
         return "redirect:/";
     }
 
@@ -64,6 +77,7 @@ public class PostController {
         model.addAttribute("endPage",endPage);
     }
 
+
     @GetMapping("posts/{id}")
     public String getPost(@PathVariable Long id, Model model){
         Post post=postService.findById(id);
@@ -72,17 +86,20 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/update")
-    public String getPostUpdate(@PathVariable Long id, Model model){
+    public String getPostUpdate( @PathVariable Long id,Model model){
         Post post = postService.findById(id);
         model.addAttribute("post",post);
-
         return "updateForm";
     }
 
     @PostMapping("/posts/{id}/update")
-    public String postUpdate(@PathVariable Long id, PostRequest postRequest){
+    public String postUpdate(@PathVariable Long id, @Validated @ModelAttribute("post") PostRequest postRequest,
+                             BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            log.info("errors={}",bindingResult);
+            return "updateForm";
+        }
         postService.update(id,postRequest);
-
         return "redirect:/posts/"+id;
     }
 
