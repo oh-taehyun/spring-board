@@ -2,12 +2,16 @@ package org.example.springboard.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.springboard.auth.CustomUserDetails;
 import org.example.springboard.dto.PostRequest;
 import org.example.springboard.entity.Post;
+import org.example.springboard.entity.UserAccount;
 import org.example.springboard.service.PostService;
+import org.example.springboard.service.UserAccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -28,6 +33,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final UserAccountService userAccountService;
     @GetMapping("/write")
     public String write(@ModelAttribute("post")PostRequest postRequest)
     {
@@ -37,14 +43,15 @@ public class PostController {
 
     @PostMapping("write")
     public String addPost(@Validated @ModelAttribute("post") PostRequest post,
-                          BindingResult bindingResult){
-
+                          Principal principal, @AuthenticationPrincipal UserAccount user, Model model,BindingResult bindingResult){
+        UserAccount userAccount = this.userAccountService.getUser(principal.getName());
+        model.addAttribute("user",user);
         if(bindingResult.hasErrors()){
             log.info("errors={}",bindingResult);
             return "writeForm";
         }
         //성공 로직
-        postService.addPost(post);
+        postService.addPost(userAccount,post);
         return "redirect:/";
     }
 
