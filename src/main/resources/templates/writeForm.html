@@ -19,13 +19,14 @@
 </div>
 <div class="container">
     <form action="/write" th:action th:object="${post}" method="post">
-        <input class="form-control" placeholder="제목을 입력하세요." id="title" th:field="*{title}"
+        <label for="title">제목</label><input class="form-control" placeholder="제목을 입력하세요." id="title" th:field="*{title}"
         th:errorclass="field-error"/>
         <div class="field-error" th:errors="*{title}">
             제목 공백 오류
         </div>
+    <label for="writer">작성자</label><input class="form-control"  id="writer" th:value="${#authentication.name}" readonly/>
     <br>
-    <label for="content">내용</label>
+        <label for="content">내용</label>
         <textarea class="form-control" placeholder="내용을 입력하세요." id="content" th:field="*{content}"
                   th:errorclass="field-error" style="height: 300px; resize: none"></textarea>
         <div class="field-error" th:errors="*{content}">
