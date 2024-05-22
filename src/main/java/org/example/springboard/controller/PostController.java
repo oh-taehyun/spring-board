@@ -41,9 +41,9 @@ public class PostController {
 
     }
 
-    @PostMapping("write")
-    public String addPost(@Validated @ModelAttribute("post") PostRequest post,
-                          Principal principal, @AuthenticationPrincipal UserAccount user, Model model,BindingResult bindingResult){
+    @PostMapping("/write")
+    public String addPost(@Validated @ModelAttribute("post") PostRequest post, BindingResult bindingResult,
+                          Principal principal, @AuthenticationPrincipal UserAccount user, Model model){
         UserAccount userAccount = this.userAccountService.getUser(principal.getName());
         model.addAttribute("user",user);
         if(bindingResult.hasErrors()){
